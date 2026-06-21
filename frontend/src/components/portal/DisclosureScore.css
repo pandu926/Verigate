@@ -1,0 +1,176 @@
+/* DisclosureScore — privacy shield visualization */
+
+.disclosure-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  transition: border-color var(--duration-normal) var(--ease-out);
+}
+
+.disclosure-score--low {
+  border-color: oklch(72% 0.17 145 / 0.3);
+}
+
+.disclosure-score--medium {
+  border-color: oklch(78% 0.15 75 / 0.3);
+}
+
+.disclosure-score--high {
+  border-color: oklch(65% 0.2 25 / 0.3);
+}
+
+/* Shield wrapper for positioning glow */
+.disclosure-score__shield-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.disclosure-score__shield {
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+/* Shield fill color by privacy level */
+.disclosure-score--low .disclosure-score__shield-fill {
+  fill: oklch(72% 0.17 145 / 0.15);
+}
+
+.disclosure-score--medium .disclosure-score__shield-fill {
+  fill: oklch(78% 0.15 75 / 0.12);
+}
+
+.disclosure-score--high .disclosure-score__shield-fill {
+  fill: oklch(65% 0.2 25 / 0.1);
+}
+
+/* Shield stroke */
+.disclosure-score--low .disclosure-score__shield-stroke {
+  stroke: var(--color-success);
+}
+
+.disclosure-score--medium .disclosure-score__shield-stroke {
+  stroke: var(--color-warning);
+}
+
+.disclosure-score--high .disclosure-score__shield-stroke {
+  stroke: var(--color-danger);
+}
+
+/* Lock icon parts */
+.disclosure-score--low .disclosure-score__lock-body {
+  stroke: var(--color-success);
+  fill: oklch(72% 0.17 145 / 0.2);
+}
+
+.disclosure-score--medium .disclosure-score__lock-body {
+  stroke: var(--color-warning);
+  fill: oklch(78% 0.15 75 / 0.2);
+}
+
+.disclosure-score--high .disclosure-score__lock-body {
+  stroke: var(--color-danger);
+  fill: oklch(65% 0.2 25 / 0.2);
+}
+
+.disclosure-score--low .disclosure-score__lock-shackle {
+  stroke: var(--color-success);
+}
+
+.disclosure-score--medium .disclosure-score__lock-shackle {
+  stroke: var(--color-warning);
+}
+
+.disclosure-score--high .disclosure-score__lock-shackle {
+  stroke: var(--color-danger);
+}
+
+.disclosure-score--low .disclosure-score__lock-keyhole {
+  fill: var(--color-success);
+}
+
+.disclosure-score--medium .disclosure-score__lock-keyhole {
+  fill: var(--color-warning);
+}
+
+.disclosure-score--high .disclosure-score__lock-keyhole {
+  fill: var(--color-danger);
+}
+
+/* Glow behind shield for strong privacy */
+.disclosure-score__glow {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    oklch(72% 0.17 145 / 0.12) 0%,
+    transparent 70%
+  );
+  animation: shield-pulse 3s var(--ease-in-out) infinite;
+}
+
+@keyframes shield-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Text content */
+.disclosure-score__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.disclosure-score__label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-text-tertiary);
+}
+
+.disclosure-score__ratio {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+
+.disclosure-score__number {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.disclosure-score__percentage {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  line-height: 1;
+  transition: color var(--duration-normal) var(--ease-out);
+}
+
+.disclosure-score__percentage--low {
+  color: var(--color-success);
+}
+
+.disclosure-score__percentage--medium {
+  color: var(--color-warning);
+}
+
+.disclosure-score__percentage--high {
+  color: var(--color-danger);
+}
+
+.disclosure-score__hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}

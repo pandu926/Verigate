@@ -1,0 +1,39 @@
+{
+  "issuers": [
+    {
+      "did": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+      "name": "Test Entity Issuer (Ed25519)",
+      "credential_types": ["entity", "signer", "region"],
+      "valid_from": "2020-01-01T00:00:00Z",
+      "valid_until": null
+    },
+    {
+      "did": "did:key:zDnaerDaTF5BXEavCrfRZEk316dpbLsfPDZ3WJ5hRTPFU2169",
+      "name": "Test Wallet Issuer (ES256)",
+      "credential_types": ["wallet"],
+      "valid_from": "2020-01-01T00:00:00Z",
+      "valid_until": null
+    },
+    {
+      "did": "did:key:z6MkTestAllTypes",
+      "name": "Development All-Types Issuer",
+      "credential_types": ["entity", "signer", "region", "wallet"],
+      "valid_from": "2020-01-01T00:00:00Z",
+      "valid_until": "2030-12-31T23:59:59Z"
+    },
+    {
+      "did": "did:key:z6MkneMkZqwqRiU5mJzSG3kDwzt9P8C59N4NGTfBLfSGE7c7",
+      "name": "Test Factory Ed25519 Issuer",
+      "credential_types": ["entity", "signer", "region", "wallet"],
+      "valid_from": "2020-01-01T00:00:00Z",
+      "valid_until": null
+    },
+    {
+      "did": "did:key:z4oJ8bQWmdRbkhWsbC85S7BkLD7dfZ2tm3eZ2mtA6C4j3Si19XLij1UD1qzaFYQM9fC7x1Yh2PMdnGkM8PoBnndDLwzHH",
+      "name": "Test Factory ES256 Issuer",
+      "credential_types": ["wallet"],
+      "valid_from": "2020-01-01T00:00:00Z",
+      "valid_until": null
+    }
+  ]
+}

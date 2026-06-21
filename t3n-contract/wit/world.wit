@@ -1,0 +1,83 @@
+/// Verigate TEE Contract v0.4.0 — State Machine with Evidence Chain
+///
+/// 9 contract functions implementing a full assessment state machine:
+/// commit-plan → verify-credential(N) → assess-risk → decide → execute-protected-action
+///
+/// Enforcement: step ordering, expiry, policy gates, tamper detection
+/// Audit: SHA-256 evidence chain, violation recording, query functions
+///
+/// Imports:
+///   - tenant-context: caller DID, contract ID, cluster timestamp
+///   - logging: structured logging inside TEE
+///   - kv-store: persistent state (plans, evidence, violations, decisions)
+///   - http: outbound for AI inference (Pioneer AI) — no PII
+///   - http-with-placeholders: PII-safe egress (resolved by TEE host)
+package z:verigate@0.1.0;
+
+world verigate {
+    import host:tenant/tenant-context@1.0.0;
+    import host:interfaces/logging@2.1.0;
+    import host:interfaces/kv-store@2.1.0;
+    import host:interfaces/http@2.1.0;
+    import host:interfaces/http-with-placeholders@2.1.0;
+
+    export contracts;
+}
+
+interface contracts {
+    record generic-input {
+        input:        option<list<u8>>,
+        user-profile: option<list<u8>>,
+        context:      option<list<u8>>,
+    }
+
+    /// Set compliance policy for a case. Must be called before commit-assessment-plan.
+    /// Input: { case_id, policy: { required_credential_types, max_risk_tolerance, ... } }
+    set-compliance-policy: func(req: generic-input) -> result<list<u8>, string>;
+
+    /// Lock execution order for a case. Creates the assessment plan state machine.
+    /// Input: { case_id, steps: [{function_name, required, timeout_secs}], ttl_secs }
+    commit-assessment-plan: func(req: generic-input) -> result<list<u8>, string>;
+
+    /// Verify a credential — Ed25519/ES256 signature check inside TEE.
+    /// Step-verified: must match current plan step or violation recorded.
+    /// Input: { case_id, requirement_id, vp, trusted_issuers }
+    verify-credential: func(req: generic-input) -> result<list<u8>, string>;
+
+    /// AI risk assessment — reasoning inside TEE, facts never leave enclave.
+    /// Step-verified. Calls Pioneer AI via host:interfaces/http.
+    /// Input: { case_id, facts, policy_context, llm_api_key, llm_base_url }
+    assess-risk: func(req: generic-input) -> result<list<u8>, string>;
+
+    /// Final decision — aggregates evidence, applies policy, produces verdict.
+    /// Step-verified. Verifies evidence chain integrity before deciding.
+    /// Input: { case_id }
+    decide: func(req: generic-input) -> result<list<u8>, string>;
+
+    /// Post-approval protected action — ONLY callable after decide=approved.
+    /// Verifies evidence chain hash for tamper detection.
+    /// Uses http-with-placeholders for PII-safe execution.
+    /// Input: { case_id, action_type, action_payload }
+    execute-protected-action: func(req: generic-input) -> result<list<u8>, string>;
+
+    /// Query current plan status for a case.
+    /// Input: { case_id }
+    get-plan-status: func(req: generic-input) -> result<list<u8>, string>;
+
+    /// Query full evidence chain for a case.
+    /// Input: { case_id }
+    get-evidence-chain: func(req: generic-input) -> result<list<u8>, string>;
+
+    /// Query all recorded violations for a case.
+    /// Input: { case_id }
+    get-violations: func(req: generic-input) -> result<list<u8>, string>;
+
+    /// Advance step in plan — verifies ordering, records violation if wrong.
+    /// Separated from main functions to stay within TEE fuel budget.
+    /// Input: { case_id, function_name }
+    advance-step: func(req: generic-input) -> result<list<u8>, string>;
+
+    /// Append result to evidence chain — separated for fuel budget.
+    /// Input: { case_id, step_index, function_name, result_data }
+    append-to-evidence: func(req: generic-input) -> result<list<u8>, string>;
+}

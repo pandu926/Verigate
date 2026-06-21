@@ -1,0 +1,17 @@
+{
+  "id": "issue_onboarding_token",
+  "name": "Issue Onboarding Token",
+  "description": "Issues a partner onboarding token via TEE-protected API call. The T3 TEE resolves {{profile.*}} placeholders host-side — our backend never sees the actual PII values.",
+  "url": "https://partner-api.example.com/v1/tokens/issue",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json",
+    "X-Agent-DID": "{{agent.did}}"
+  },
+  "body_template": {
+    "entity_name": "{{profile.legal_name}}",
+    "wallet_address": "{{profile.wallet_address}}",
+    "jurisdiction": "{{profile.jurisdiction}}",
+    "grant_type": "onboarding_access"
+  }
+}

@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+target/
+frontend/dist/
+*.tsbuildinfo
+
+# Environment & Secrets
+.env
+.env.local
+.env.production
+*.key
+*.pem
+*.secret
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test artifacts
+e2e/test-results/
+e2e/playwright-report/
+e2e/screenshots/
+
+# Planning & internal docs (not for public)
+.planning/
+.claude/
+docs/
+CLAUDE.md
+autonomous_counterparty_agent_prd.md
+
+# Logs
+*.log
+npm-debug.log*
+
+# Docker volumes
+verigate-pgdata/
+
+# Misc
+coverage/
+.nyc_output/
+/tmp/

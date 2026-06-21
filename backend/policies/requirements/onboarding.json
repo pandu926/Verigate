@@ -1,0 +1,49 @@
+{
+  "workflow_type": "Onboarding",
+  "requirements": [
+    {
+      "claim_type": "entity_registration",
+      "mandatory": true,
+      "description": "Proof of entity registration in the claimed jurisdiction",
+      "acceptable_proof_types": ["verifiable_credential", "government_registry"],
+      "required_claims": ["legal_name", "registration_number", "jurisdiction", "entity_type"],
+      "conditions": null
+    },
+    {
+      "claim_type": "authorized_signer",
+      "mandatory": true,
+      "description": "Proof that the submitting party is an authorized signer for the entity",
+      "acceptable_proof_types": ["verifiable_credential", "notarized_document"],
+      "required_claims": ["name", "title", "authority_level", "signing_capacity"],
+      "conditions": null
+    },
+    {
+      "claim_type": "jurisdiction_compliance",
+      "mandatory": true,
+      "description": "Confirmation of regulatory compliance in operating jurisdiction",
+      "acceptable_proof_types": ["verifiable_credential", "government_registry", "audit_report"],
+      "required_claims": ["country_code", "region", "regulatory_framework", "risk_level"],
+      "conditions": null
+    },
+    {
+      "claim_type": "wallet_proof",
+      "mandatory": true,
+      "description": "Proof of wallet ownership for on-chain operations",
+      "acceptable_proof_types": ["signed_message", "verifiable_credential"],
+      "required_claims": ["wallet_address", "chain", "protocol", "verification_method"],
+      "conditions": {
+        "relationship_goal_contains": "web3"
+      }
+    },
+    {
+      "claim_type": "beneficial_ownership",
+      "mandatory": true,
+      "description": "Disclosure of beneficial owners holding 25% or more",
+      "acceptable_proof_types": ["verifiable_credential", "government_registry", "signed_declaration"],
+      "required_claims": ["beneficial_owners", "ownership_percentage", "verification_date"],
+      "conditions": {
+        "entity_types": ["Corporation", "Fund", "Trust", "Dao"]
+      }
+    }
+  ]
+}

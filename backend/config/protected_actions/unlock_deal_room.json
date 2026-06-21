@@ -1,0 +1,17 @@
+{
+  "id": "unlock_deal_room",
+  "name": "Unlock Deal Room",
+  "description": "Grants counterparty access to the secure deal room after approval. The T3 TEE resolves {{profile.*}} placeholders host-side — our backend never sees the actual PII values.",
+  "url": "https://deal-room.example.com/v1/access/grant",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json",
+    "X-Agent-DID": "{{agent.did}}"
+  },
+  "body_template": {
+    "counterparty_name": "{{profile.legal_name}}",
+    "email": "{{profile.contact_email}}",
+    "access_level": "full",
+    "expires_in_hours": 72
+  }
+}

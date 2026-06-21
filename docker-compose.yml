@@ -1,0 +1,86 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: verigate
+      POSTGRES_PASSWORD: verigate
+      POSTGRES_DB: verigate
+    ports:
+      - "5433:5432"
+    volumes:
+      - verigate-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U verigate"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3302:3001"
+    # Demo defaults — zero configuration required. Override for production.
+    environment:
+      DATABASE_URL: postgres://verigate:verigate@postgres:5432/verigate
+      SERVER_HOST: "0.0.0.0"
+      SERVER_PORT: "3001"
+      RUST_LOG: info,verigate_backend=debug
+      TEST_MODE: "true"
+      T3_API_URL: "http://t3n-bridge:3310"
+      T3_AGENT_KEY: "${T3_AGENT_KEY:-}"
+      T3N_BRIDGE_URL: "http://t3n-bridge:3310"
+      PIONEER_API_KEY: "${PIONEER_API_KEY:-}"
+      LLM_API_KEY: "${PIONEER_API_KEY:-}"
+      LLM_PROVIDER: "pioneer"
+      LLM_MODEL: "deepseek-ai/DeepSeek-V4-Pro"
+      LLM_BASE_URL: "https://api.pioneer.ai/v1"
+      JWT_SECRET: "${JWT_SECRET:-change-me-in-production}"
+      POLICIES_DIR: "policies"
+      TRUSTED_ISSUERS_PATH: "config/trusted_issuers.json"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      t3n-bridge:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  t3n-bridge:
+    build:
+      context: ./t3n-client
+      dockerfile: Dockerfile
+    environment:
+      T3N_API_KEY: "${T3N_API_KEY:-}"
+      PIONEER_API_KEY: "${PIONEER_API_KEY:-}"
+      T3N_BRIDGE_PORT: "3310"
+      CONTRACT_WASM_PATH: "/app/contract/verigate_verify.wasm"
+    ports:
+      - "3310:3310"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3310/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 25s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3309:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  verigate-pgdata:

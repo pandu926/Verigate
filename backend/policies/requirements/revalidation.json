@@ -1,0 +1,31 @@
+{
+  "workflow_type": "Revalidation",
+  "requirements": [
+    {
+      "claim_type": "entity_registration",
+      "mandatory": true,
+      "description": "Updated proof of entity registration confirming active status",
+      "acceptable_proof_types": ["verifiable_credential", "government_registry"],
+      "required_claims": ["legal_name", "registration_number", "jurisdiction", "entity_type"],
+      "conditions": null
+    },
+    {
+      "claim_type": "current_standing",
+      "mandatory": true,
+      "description": "Confirmation of good standing and no material adverse changes",
+      "acceptable_proof_types": ["signed_declaration", "government_registry", "verifiable_credential"],
+      "required_claims": ["standing_status", "confirmation_date", "declaring_party", "material_changes"],
+      "conditions": null
+    },
+    {
+      "claim_type": "change_of_control",
+      "mandatory": true,
+      "description": "Disclosure of any changes in ownership or control structure",
+      "acceptable_proof_types": ["signed_declaration", "verifiable_credential", "government_registry"],
+      "required_claims": ["change_occurred", "change_date", "new_controllers", "previous_controllers"],
+      "conditions": {
+        "entity_types": ["Corporation", "Fund"]
+      }
+    }
+  ]
+}

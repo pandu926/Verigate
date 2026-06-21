@@ -1,0 +1,4 @@
+[workspace]
+members = ["backend"]
+exclude = ["t3n-contract"]
+resolver = "2"

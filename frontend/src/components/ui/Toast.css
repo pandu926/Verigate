@@ -1,0 +1,110 @@
+/* Toast notification system — dark luxury aesthetic */
+
+.toast-container {
+  position: fixed;
+  bottom: var(--space-xl);
+  right: var(--space-xl);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-sm);
+  max-width: 380px;
+  pointer-events: none;
+}
+
+.toast-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  animation: toast-slide-in var(--duration-normal) var(--ease-out) both;
+}
+
+@keyframes toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Type-specific left accent border */
+.toast-item--success {
+  border-left: 3px solid var(--color-success);
+}
+
+.toast-item--info {
+  border-left: 3px solid var(--color-accent);
+}
+
+.toast-item--warning {
+  border-left: 3px solid var(--color-warning);
+}
+
+.toast-item--error {
+  border-left: 3px solid var(--color-danger);
+}
+
+/* Icon styling per type */
+.toast-item__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.toast-item--success .toast-item__icon {
+  color: var(--color-success);
+}
+
+.toast-item--info .toast-item__icon {
+  color: var(--color-accent);
+}
+
+.toast-item--warning .toast-item__icon {
+  color: var(--color-warning);
+}
+
+.toast-item--error .toast-item__icon {
+  color: var(--color-danger);
+}
+
+/* Message text */
+.toast-item__message {
+  flex: 1;
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  line-height: var(--leading-normal);
+}
+
+/* Close button */
+.toast-item__close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out),
+              background-color var(--duration-fast) var(--ease-out);
+}
+
+.toast-item__close:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-elevated);
+}

@@ -1,0 +1,278 @@
+/* ProofChecklist — vertical journey timeline with connecting line */
+
+.proof-checklist {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-left: var(--space-lg);
+}
+
+/* Vertical connecting line */
+.proof-checklist::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: var(--space-xl);
+  bottom: var(--space-xl);
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--color-success) 0%,
+    var(--color-accent) 50%,
+    var(--color-border) 100%
+  );
+  border-radius: 1px;
+  opacity: 0.6;
+}
+
+/* Single checklist step */
+.proof-checklist__step {
+  position: relative;
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  animation: step-fade-in var(--duration-slow) var(--ease-out) both;
+}
+
+@keyframes step-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Node dot on the timeline */
+.proof-checklist__node {
+  position: relative;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+
+.proof-checklist__node--verified {
+  background: var(--color-success);
+  box-shadow: 0 0 12px oklch(72% 0.17 145 / 0.5);
+}
+
+.proof-checklist__node--current {
+  background: var(--color-accent);
+  box-shadow: 0 0 16px oklch(72% 0.18 165 / 0.5);
+  animation: node-pulse 2s var(--ease-in-out) infinite;
+}
+
+.proof-checklist__node--pending {
+  background: var(--color-bg-elevated);
+  border: 2px solid var(--color-border);
+}
+
+.proof-checklist__node--failed {
+  background: var(--color-danger);
+  box-shadow: 0 0 10px oklch(65% 0.2 25 / 0.4);
+}
+
+@keyframes node-pulse {
+  0%, 100% {
+    box-shadow: 0 0 16px oklch(72% 0.18 165 / 0.5);
+  }
+  50% {
+    box-shadow: 0 0 24px oklch(72% 0.18 165 / 0.7);
+  }
+}
+
+/* Checkmark SVG inside verified nodes */
+.proof-checklist__checkmark {
+  width: 12px;
+  height: 12px;
+  stroke: var(--color-bg-primary);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  animation: draw-check 0.4s var(--ease-out) forwards;
+}
+
+@keyframes draw-check {
+  from {
+    stroke-dasharray: 20;
+    stroke-dashoffset: 20;
+  }
+  to {
+    stroke-dasharray: 20;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Card content */
+.proof-checklist__card {
+  flex: 1;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: border-color var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+
+.proof-checklist__card:hover {
+  border-color: var(--color-border-active);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.proof-checklist__card--current {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow), inset 0 0 0 1px oklch(72% 0.18 165 / 0.1);
+}
+
+.proof-checklist__card--verified {
+  opacity: 0.85;
+}
+
+.proof-checklist__card--pending {
+  opacity: 0.5;
+}
+
+.proof-checklist__card--failed {
+  border-color: var(--color-danger-dim);
+}
+
+/* Card header row */
+.proof-checklist__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.proof-checklist__type {
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+/* Status badge */
+.proof-checklist__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.proof-checklist__badge--verified {
+  background: oklch(72% 0.17 145 / 0.1);
+  color: var(--color-success);
+  border: 1px solid oklch(72% 0.17 145 / 0.2);
+}
+
+.proof-checklist__badge--pending {
+  background: oklch(45% 0.01 260 / 0.1);
+  color: var(--color-text-tertiary);
+  border: 1px solid var(--color-border);
+}
+
+.proof-checklist__badge--submitted {
+  background: oklch(72% 0.18 165 / 0.1);
+  color: var(--color-accent);
+  border: 1px solid oklch(72% 0.18 165 / 0.2);
+}
+
+.proof-checklist__badge--failed {
+  background: oklch(65% 0.2 25 / 0.1);
+  color: var(--color-danger);
+  border: 1px solid oklch(65% 0.2 25 / 0.2);
+}
+
+/* Description text */
+.proof-checklist__description {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 var(--space-md) 0;
+}
+
+/* Action button */
+.proof-checklist__action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-accent);
+  background: oklch(72% 0.18 165 / 0.08);
+  color: var(--color-accent);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.proof-checklist__action:hover {
+  background: oklch(72% 0.18 165 / 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px oklch(72% 0.18 165 / 0.2);
+}
+
+.proof-checklist__action:active {
+  transform: translateY(0);
+}
+
+.proof-checklist__action:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Claims list */
+.proof-checklist__claims {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.proof-checklist__claim-tag {
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-tertiary);
+  border: 1px solid var(--color-border);
+}
+
+/* Content wrapper for card + submission card */
+.proof-checklist__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+}

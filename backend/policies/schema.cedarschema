@@ -1,0 +1,42 @@
+// Santiora RBAC Schema
+// Defines entity types, attributes, and available actions for Cedar policy evaluation.
+
+entity User = {
+    "role": String,
+};
+
+entity Agent = {
+    "agent_type": String,
+};
+
+entity Case = {
+    "status": String,
+    "workflow_type": String,
+};
+
+entity Application;
+
+action "view" appliesTo {
+    principal: [User, Agent],
+    resource: [Case, Application],
+};
+
+action "create" appliesTo {
+    principal: [User, Agent],
+    resource: [Case, Application],
+};
+
+action "transition" appliesTo {
+    principal: [User, Agent],
+    resource: [Case, Application],
+};
+
+action "override" appliesTo {
+    principal: [User, Agent],
+    resource: [Case, Application],
+};
+
+action "submit_proof" appliesTo {
+    principal: [User, Agent],
+    resource: [Case, Application],
+};

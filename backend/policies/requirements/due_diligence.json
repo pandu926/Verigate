@@ -1,0 +1,55 @@
+{
+  "workflow_type": "DueDiligence",
+  "requirements": [
+    {
+      "claim_type": "entity_registration",
+      "mandatory": true,
+      "description": "Proof of entity registration in the claimed jurisdiction",
+      "acceptable_proof_types": ["verifiable_credential", "government_registry"],
+      "required_claims": ["legal_name", "registration_number", "jurisdiction", "entity_type"],
+      "conditions": null
+    },
+    {
+      "claim_type": "financial_standing",
+      "mandatory": true,
+      "description": "Evidence of financial stability and operational capacity",
+      "acceptable_proof_types": ["audit_report", "bank_statement", "verifiable_credential"],
+      "required_claims": ["annual_revenue", "net_assets", "audit_date", "auditor"],
+      "conditions": null
+    },
+    {
+      "claim_type": "regulatory_history",
+      "mandatory": true,
+      "description": "Disclosure of regulatory actions, fines, or sanctions history",
+      "acceptable_proof_types": ["signed_declaration", "government_registry"],
+      "required_claims": ["actions_count", "last_action_date", "status", "declaration_date"],
+      "conditions": null
+    },
+    {
+      "claim_type": "beneficial_ownership",
+      "mandatory": true,
+      "description": "Disclosure of beneficial owners holding 25% or more",
+      "acceptable_proof_types": ["verifiable_credential", "government_registry", "signed_declaration"],
+      "required_claims": ["beneficial_owners", "ownership_percentage", "verification_date"],
+      "conditions": null
+    },
+    {
+      "claim_type": "sanctions_screening",
+      "mandatory": true,
+      "description": "Confirmation that entity and principals are not on sanctions lists",
+      "acceptable_proof_types": ["screening_report", "verifiable_credential"],
+      "required_claims": ["screening_result", "screening_date", "provider", "lists_checked"],
+      "conditions": null
+    },
+    {
+      "claim_type": "wallet_proof",
+      "mandatory": true,
+      "description": "Proof of wallet ownership for on-chain operations",
+      "acceptable_proof_types": ["signed_message", "verifiable_credential"],
+      "required_claims": ["wallet_address", "chain", "protocol", "verification_method"],
+      "conditions": {
+        "relationship_goal_contains": "web3"
+      }
+    }
+  ]
+}

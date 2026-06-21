@@ -1,0 +1,16 @@
+{
+  "name": "verigate-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "End-to-end infrastructure verification tests for Verigate",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.45.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "jsonwebtoken": "^9.0.3",
+    "typescript": "5.5.4"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "workflow_type": "Compliance",
+  "requirements": [
+    {
+      "claim_type": "regulatory_license",
+      "mandatory": true,
+      "description": "Valid regulatory license for operations in declared jurisdictions",
+      "acceptable_proof_types": ["government_registry", "verifiable_credential"],
+      "required_claims": ["license_number", "issuing_authority", "valid_until", "jurisdiction"],
+      "conditions": null
+    },
+    {
+      "claim_type": "aml_program",
+      "mandatory": true,
+      "description": "Documentation of anti-money laundering program and controls",
+      "acceptable_proof_types": ["audit_report", "signed_declaration", "verifiable_credential"],
+      "required_claims": ["program_name", "last_audit_date", "risk_rating", "controls_summary"],
+      "conditions": null
+    },
+    {
+      "claim_type": "data_protection",
+      "mandatory": true,
+      "description": "Evidence of data protection and privacy compliance",
+      "acceptable_proof_types": ["audit_report", "verifiable_credential", "certification"],
+      "required_claims": ["framework", "certification_date", "certifying_body", "scope"],
+      "conditions": null
+    },
+    {
+      "claim_type": "jurisdiction_compliance",
+      "mandatory": true,
+      "description": "Confirmation of regulatory compliance in operating jurisdiction",
+      "acceptable_proof_types": ["verifiable_credential", "government_registry", "audit_report"],
+      "required_claims": ["country_code", "region", "regulatory_framework", "risk_level"],
+      "conditions": null
+    }
+  ]
+}
