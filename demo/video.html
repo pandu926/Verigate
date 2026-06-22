@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920">
+  <title>Verigate — Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#0a0e14;overflow:hidden;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;color:#fff}
+    .stage{width:1920px;height:1080px;margin:0 auto;position:relative;overflow:hidden}
+
+    .slide{position:absolute;inset:0;opacity:0;display:flex;padding:80px 100px}
+
+    .story{flex:1.1;display:flex;flex-direction:column;justify-content:center;padding-right:80px}
+    .terminal{flex:0.9;background:#111820;border-radius:16px;border:1px solid #1e2d3d;padding:32px 36px;display:flex;flex-direction:column;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.8;color:#c9d1d9}
+    .term-header{display:flex;gap:8px;margin-bottom:20px}
+    .term-dot{width:12px;height:12px;border-radius:50%}
+    .term-dot.r{background:#ff5f57}.term-dot.y{background:#febc2e}.term-dot.g{background:#28c840}
+    .term-content{flex:1;overflow:hidden}
+    .term-line{opacity:0;margin-bottom:2px}
+    .cmd{color:#79c0ff}.result{color:#c9d1d9}.teal{color:#14b8a6}.green{color:#3fb950}.red{color:#f85149}.dim{color:#6e7681}.yellow{color:#d29922}.magenta{color:#bc8cff}
+
+    .story .label{font-size:13px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#14b8a6;margin-bottom:16px}
+    .story h1{font-size:44px;font-weight:700;line-height:1.3;margin-bottom:24px}
+    .story p{font-size:20px;line-height:1.7;color:rgba(255,255,255,0.7)}
+    .story .highlight{color:#fff;font-weight:600}
+    .story .proof{margin-top:24px;padding:20px 28px;border-left:3px solid #14b8a6;background:rgba(20,184,166,0.04);border-radius:0 8px 8px 0}
+    .story .proof p{font-size:17px;color:rgba(255,255,255,0.6)}
+    .story .proof .tag{color:#14b8a6;font-weight:600;font-size:18px;margin-bottom:8px;display:block}
+
+    .slide.full{justify-content:center;align-items:center;text-align:center;flex-direction:column}
+    .slide.full h1{font-size:64px;font-weight:800;max-width:1400px}
+    .slide.full p{font-size:24px;max-width:900px;margin-top:20px;color:rgba(255,255,255,0.6)}
+    .slide.full .badge{margin-top:40px;padding:12px 32px;border:1px solid rgba(20,184,166,0.4);border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:14px;color:#14b8a6;letter-spacing:1px}
+
+    .slide.full .features{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;max-width:1200px;text-align:left}
+    .feature-card{padding:24px;border:1px solid #1e2d3d;border-radius:12px;background:rgba(20,184,166,0.02)}
+    .feature-card h3{font-size:16px;color:#14b8a6;margin-bottom:8px}
+    .feature-card p{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6}
+  </style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <!-- SLIDE 0: OPENING -->
+  <div class="slide full" id="s0">
+    <div class="label">Terminal 3 Agent Dev Kit</div>
+    <h1>Verigate</h1>
+    <p>Autonomous Counterparty Due Diligence Agent — every action identity-bound, delegated by the data owner, and cryptographically auditable inside T3N TEE.</p>
+    <div class="badge">11 TEE Functions • W3C Delegation • AI in Enclave • Ed25519 Credentials</div>
+  </div>
+
+  <!-- SLIDE 1: THE PROBLEM -->
+  <div class="slide full" id="s1">
+    <div class="label">The Problem</div>
+    <h1>Counterparty onboarding exposes sensitive data<br>to every agent in the pipeline.</h1>
+    <p>Traditional KYC/KYB sends raw PII through multiple systems. No proof of who accessed what. No cryptographic boundary. No way to revoke access after the decision.</p>
+  </div>
+
+  <!-- SLIDE 2: THE SOLUTION -->
+  <div class="slide" id="s2">
+    <div class="story">
+      <div class="label">How Verigate solves it</div>
+      <h1>Agent acts on behalf of data owner — inside TEE</h1>
+      <p>Counterparty <span class="highlight">delegates</span> agent via W3C VC credential (EIP-191 signed). Agent executes <span class="highlight">inside T3N TEE</span> — verifies credentials, assesses risk with AI, makes decision. PII never leaves the enclave.</p>
+      <div class="proof">
+        <span class="tag">Runtime Enforced</span>
+        <p>Without delegation grant: T3N returns 403 Forbidden. Agent cannot act without data owner's cryptographic authorization.</p>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="term-header"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+      <div class="term-content">
+        <div class="term-line cmd">$ ./verigate demo --scenario delegation</div>
+        <div class="term-line dim">───────────────────────────────────</div>
+        <div class="term-line result">🔐 <span class="teal">Delegation Created</span></div>
+        <div class="term-line dim">  Counterparty: did:t3n:bec292d13a...</div>
+        <div class="term-line dim">  Agent:        did:t3n:30c0e33dac...</div>
+        <div class="term-line dim">  Signature:    EIP-191 ✓</div>
+        <div class="term-line dim">  Scoped:       4 functions, TTL 3600s</div>
+        <div class="term-line result"></div>
+        <div class="term-line green">✓ Active: true, Remaining: 3600s</div>
+        <div class="term-line result"></div>
+        <div class="term-line result">🔓 <span class="yellow">Delegation Revoked</span></div>
+        <div class="term-line green">✓ Flow: create → authorize → revoke</div>
+        <div class="term-line green">✓ Data owner controls agent at all times</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: GOOD ENTITY — APPROVED -->
+  <div class="slide" id="s3">
+    <div class="story">
+      <div class="label">Scenario 1</div>
+      <h1>Good Entity → APPROVED</h1>
+      <p>Acme Trading Pte Ltd (Singapore). Licensed, AML clear, no PEP matches. AI inside TEE analyzes <span class="highlight">19 verified facts</span> from Ed25519-signed credentials.</p>
+      <div class="proof">
+        <span class="tag">AI Reasoning (Pioneer/DeepSeek-V4-Flash in TEE)</span>
+        <p>"All checks passed: AML cleared, no PEP matches, sanctions clear, entity registered in low-risk Singapore jurisdiction."</p>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="term-header"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+      <div class="term-content">
+        <div class="term-line cmd">$ ./verigate demo --scenario good</div>
+        <div class="term-line dim">───────────────────────────────────</div>
+        <div class="term-line result">🏢 Good Entity — Acme Trading (SG)</div>
+        <div class="term-line dim">  [1] Building Ed25519 signed JWTs...</div>
+        <div class="term-line dim">  [2] Executing in T3N TEE...</div>
+        <div class="term-line result"></div>
+        <div class="term-line green">  ██ APPROVED ██ (confidence: 0.95)</div>
+        <div class="term-line result"></div>
+        <div class="term-line dim">  Credentials verified: 2 (Ed25519)</div>
+        <div class="term-line dim">  Facts extracted: 19</div>
+        <div class="term-line magenta">  Committed by: did:t3n:bec292d1...</div>
+        <div class="term-line teal">  Delegation: auto-revoked ✓</div>
+        <div class="term-line dim">  Elapsed: 4710ms</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: SANCTIONED ENTITY — BLOCKED -->
+  <div class="slide" id="s4">
+    <div class="story">
+      <div class="label">Scenario 2</div>
+      <h1>Sanctioned Entity → BLOCKED</h1>
+      <p>Korea Munitions Industry Department (DPRK). OFAC SDN List, UN Resolution 1718. AI inside TEE immediately identifies maximum risk — <span class="highlight">confidence 1.0</span>.</p>
+      <div class="proof">
+        <span class="tag">AI Reasoning</span>
+        <p>"Entity is a designated North Korean state military enterprise under comprehensive sanctions, with failed AML check and direct links to maximum-risk PEP (Kim Jong Un)."</p>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="term-header"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+      <div class="term-content">
+        <div class="term-line cmd">$ ./verigate demo --scenario sanctioned</div>
+        <div class="term-line dim">───────────────────────────────────</div>
+        <div class="term-line result">🚫 Sanctioned — Korea Munitions (DPRK)</div>
+        <div class="term-line dim">  [1] Building credential...</div>
+        <div class="term-line dim">  [2] Executing in T3N TEE...</div>
+        <div class="term-line result"></div>
+        <div class="term-line red">  ██ BLOCKED ██ (confidence: 1.0)</div>
+        <div class="term-line result"></div>
+        <div class="term-line dim">  sanctions_clear: false - OFAC SDN</div>
+        <div class="term-line dim">  aml_checked: FAILED</div>
+        <div class="term-line dim">  pep_status: Kim Jong Un</div>
+        <div class="term-line green">  ✓ AI correctly blocked sanctioned entity</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: STATE MACHINE -->
+  <div class="slide" id="s5">
+    <div class="story">
+      <div class="label">Enforcement</div>
+      <h1>State Machine Rejects Violations</h1>
+      <p>TEE contract enforces step ordering. If agent tries to skip verification and go directly to risk assessment — the state machine <span class="highlight">blocks execution and records the violation</span>.</p>
+      <div class="proof">
+        <span class="tag">Not just logging — actual enforcement</span>
+        <p>T3N returns HTTP 400: "Out of order: expected 'verify-credential', got 'assess-risk'". Violation permanently recorded in evidence chain.</p>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="term-header"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+      <div class="term-content">
+        <div class="term-line cmd">$ ./verigate demo --scenario violation</div>
+        <div class="term-line dim">───────────────────────────────────</div>
+        <div class="term-line result">⛔ Out-of-Order Execution Test</div>
+        <div class="term-line dim">  [1] Plan: verify → assess → decide</div>
+        <div class="term-line green">  ✓ Plan committed</div>
+        <div class="term-line dim">  [2] Attempting assess-risk FIRST...</div>
+        <div class="term-line result"></div>
+        <div class="term-line red">  ██ VIOLATION ENFORCED ██</div>
+        <div class="term-line result"></div>
+        <div class="term-line dim">  Expected: <span class="green">verify-credential</span></div>
+        <div class="term-line dim">  Got:      <span class="red">assess-risk</span></div>
+        <div class="term-line green">  ✓ TEE state machine enforced ordering</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: SELECTIVE DISCLOSURE -->
+  <div class="slide" id="s6">
+    <div class="story">
+      <div class="label">Privacy</div>
+      <h1>Selective Disclosure — PII Never in Contract</h1>
+      <p>Contract sends <span class="highlight">{{profile.first_name}}</span> template placeholders. T3N host resolves them to actual PII <span class="highlight">outside the contract's memory</span>. Contract never sees raw data.</p>
+      <div class="proof">
+        <span class="tag">Proven: PlaceholderUnknown error</span>
+        <p>T3N host attempted to resolve {{profile.company_name}} — confirms host processes templates. Raw PII never enters contract execution context.</p>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="term-header"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+      <div class="term-content">
+        <div class="term-line cmd">execute-protected-action: notify_counterparty</div>
+        <div class="term-line dim">───────────────────────────────────</div>
+        <div class="term-line result">Contract sends:</div>
+        <div class="term-line dim">  "to": "{{profile.verified_contacts.email.value}}"</div>
+        <div class="term-line dim">  "recipient": "{{profile.first_name}}"</div>
+        <div class="term-line dim">  "company": "{{profile.company_name}}"</div>
+        <div class="term-line result"></div>
+        <div class="term-line yellow">  T3N Host: PlaceholderUnknown("company_name")</div>
+        <div class="term-line result"></div>
+        <div class="term-line teal">  → Host RESOLVES templates externally</div>
+        <div class="term-line teal">  → Contract NEVER sees raw PII</div>
+        <div class="term-line green">  ✓ Selective disclosure enforced by TEE host</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: SDK INTEGRATION DEPTH -->
+  <div class="slide full" id="s7">
+    <div class="label">Agent Auth SDK Integration</div>
+    <h1>12+ SDK Functions Used</h1>
+    <p>Deepest integration of T3N Agent Auth SDK — not just agent-auth-update, but the entire delegation + privacy + state machine stack.</p>
+    <div class="features">
+      <div class="feature-card"><h3>buildDelegationCredential</h3><p>W3C VC credential scoped to case + functions + TTL</p></div>
+      <div class="feature-card"><h3>signCredential (EIP-191)</h3><p>Counterparty cryptographically authorizes agent</p></div>
+      <div class="feature-card"><h3>signAgentInvocation</h3><p>Per-call secp256k1 signature over request hash</p></div>
+      <div class="feature-card"><h3>revokeDelegation</h3><p>Auto-revoke after decision — bounded access</p></div>
+      <div class="feature-card"><h3>pii_did (delegated mode)</h3><p>Runtime stamps actor + subject + vc_id in audit</p></div>
+      <div class="feature-card"><h3>http-with-placeholders</h3><p>PII resolved by host, never in contract memory</p></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: CLOSING -->
+  <div class="slide full" id="s8">
+    <div class="label">Result</div>
+    <h1>Complete. Integrated. Creative.</h1>
+    <p>11 TEE contract functions • W3C delegation credentials • AI reasoning in enclave • Selective disclosure • State machine enforcement • Full business flow • E2E tested on live testnet</p>
+    <div class="badge">github.com/pandu926/Verigate • verigate.rbexp.com</div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+<script>
+(() => {
+  const tl = gsap.timeline({ delay: 1 });
+  const slides = document.querySelectorAll('.slide');
+  const HOLD = 6;
+  const FADE = 0.7;
+  const LINE_DELAY = 0.25;
+
+  slides.forEach((slide, i) => {
+    const label = `s${i}`;
+    tl.addLabel(label);
+
+    tl.to(slide, { opacity: 1, duration: FADE, ease: "power2.out" }, label);
+
+    const storyLabel = slide.querySelector('.label');
+    const storyH1 = slide.querySelector('h1');
+    const storyP = slide.querySelectorAll('.story p, .slide.full > p');
+    const proof = slide.querySelector('.proof');
+    const badge = slide.querySelector('.badge');
+    const features = slide.querySelector('.features');
+
+    if (storyLabel) tl.from(storyLabel, { y: 10, opacity: 0, duration: 0.4 }, `${label}+=0.3`);
+    if (storyH1) tl.from(storyH1, { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, `${label}+=0.5`);
+    if (storyP.length) tl.from(storyP, { y: 10, opacity: 0, duration: 0.5, stagger: 0.2 }, `${label}+=0.9`);
+    if (proof) tl.from(proof, { y: 10, opacity: 0, duration: 0.5 }, `${label}+=1.5`);
+    if (badge) tl.from(badge, { opacity: 0, duration: 0.6 }, `${label}+=2`);
+    if (features) tl.from(features.children, { y: 20, opacity: 0, duration: 0.4, stagger: 0.15 }, `${label}+=1.5`);
+
+    const termLines = slide.querySelectorAll('.term-line');
+    if (termLines.length) {
+      tl.to(termLines, { opacity: 1, duration: 0.15, stagger: LINE_DELAY, ease: "none" }, `${label}+=1.2`);
+    }
+
+    tl.to({}, { duration: HOLD }, `${label}+=${2 + termLines.length * LINE_DELAY}`);
+
+    if (i < slides.length - 1) {
+      tl.to(slide, { opacity: 0, duration: FADE, ease: "power2.in" });
+    }
+  });
+
+  tl.to({}, { duration: 5 });
+})();
+</script>
+</body>
+</html>
