@@ -50,8 +50,13 @@ export function Portal() {
       addToast('success', 'Credential verified in T3N TEE');
       setSubmittingId(null);
     },
-    onError: () => {
-      addToast('error', 'Submission failed — check credential format');
+    onError: (error) => {
+      const msg = error.message || 'Submission failed';
+      if (msg.includes('status')) {
+        addToast('error', 'Case already assessed — submissions closed');
+      } else {
+        addToast('error', msg.slice(0, 80));
+      }
       setSubmittingId(null);
     },
   });

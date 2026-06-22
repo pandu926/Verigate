@@ -7,7 +7,8 @@ use axum::Json;
 use serde::Serialize;
 use uuid::Uuid;
 
-use crate::db::cases;
+use crate::db::{cases, submissions};
+use crate::domain::submission::SubmissionStatus;
 use crate::error::AppError;
 use crate::AppState;
 
@@ -23,19 +24,32 @@ pub struct RequirementsResponse<T: Serialize> {
 ///
 /// Returns the computed list of proof requirements for a case based on its
 /// workflow type, entity type, and relationship goal.
+/// Cross-references submissions to determine which requirements are verified.
 pub async fn get_requirements(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
 ) -> Result<impl IntoResponse, AppError> {
-    // Fetch the case (returns 404 if not found)
     let case = cases::get_case(&state.pool, id).await?;
 
-    // Compute requirements based on case configuration
-    let requirements = state.requirement_engine.compute_requirements(
+    let mut requirements = state.requirement_engine.compute_requirements(
         &case.workflow_type,
         &case.entity_type,
         &case.relationship_goal,
     );
+
+    // Cross-reference with actual submissions to update status
+    let case_submissions = submissions::get_submissions_for_case(&state.pool, id)
+        .await
+        .unwrap_or_default();
+
+    for req in &mut requirements {
+        let has_verified = case_submissions.iter().any(|s| {
+            s.requirement_claim_type == req.claim_type && s.status == SubmissionStatus::Verified
+        });
+        if has_verified {
+            req.status = "verified".to_string();
+        }
+    }
 
     let count = requirements.len();
 
