@@ -182,8 +182,8 @@ export function ReviewerDashboard() {
 
               {/* Actions */}
               <div className="dash__case-actions">
-                <Link to={`/portal/${c.id}`} className="dash__action dash__action--primary">
-                  Open Portal <ChevronRightIcon size={14} />
+                <Link to={`/case/${c.id}`} className="dash__action dash__action--primary">
+                  Review Case <ChevronRightIcon size={14} />
                 </Link>
                 <Link to={`/privacy/${c.id}`} className="dash__action dash__action--ghost">
                   Privacy View

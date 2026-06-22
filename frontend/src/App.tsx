@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppShell } from '@/components/layout/AppShell';
 import { Portal } from '@/pages/Portal';
 import { ReviewerDashboard } from '@/pages/ReviewerDashboard';
+import { CaseDetail } from '@/pages/CaseDetail';
 import { PrivacySplitScreen } from '@/pages/PrivacySplitScreen';
 import { EvidenceChain } from '@/pages/EvidenceChain';
 import { Landing } from '@/pages/Landing';
@@ -42,6 +43,16 @@ export function App() {
               <ProtectedRoute>
                 <AppShell>
                   <Portal />
+                </AppShell>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/case/:caseId"
+            element={
+              <ProtectedRoute allowedRoles={['reviewer']}>
+                <AppShell>
+                  <CaseDetail />
                 </AppShell>
               </ProtectedRoute>
             }
